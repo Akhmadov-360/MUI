@@ -8,7 +8,6 @@ import Button from '@mui/material/Button';
 const Header = () => {
     return (
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-around" }}>
-            <Typography variant='h5' compopent="p" sx={{ fontSize: "26px", color: "#333333" }}>UI.Desk</Typography>
             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "40px" }}>
                 <MuiLink component={Link} to="/" underline="none" sx={{ color: "#000000", fontWeight: "500", fontSize: "20px", lineHeight: "27px" }}>Home</MuiLink>
                 <MuiLink component={Link} to="/about" underline="none" sx={{ color: "#000000", fontWeight: "500", fontSize: "20px", lineHeight: "27px" }}>About</MuiLink>

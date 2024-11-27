@@ -1,5 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Data from '../components/DataSet/Data';
+import ClickCounter from "../components/Counter/clickCounter";
 
-const Product = () => <h1>Product Page</h1>;
+const Product = () => {
+    return (
+        <div>
+            <Data />
+            <ClickCounter />
+        </div>
+    );
+};
 
 export default Product;
