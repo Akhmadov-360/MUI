@@ -14,9 +14,7 @@ const UserCard = ({ border, className, width }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          "https://api.escuelajs.co/api/v1/users"
-        );
+        const response = await fetch("https://api.escuelajs.co/api/v1/users");
 
         if (!response.ok) {
           throw new Error("Faild to fatch");
@@ -47,7 +45,7 @@ const UserCard = ({ border, className, width }) => {
   return (
     <>
       {data.map((user) => (
-        <Box key={user.id} style={styleCardUser} width={"300px"} border={"#000"} className={className} >
+        <Box key={user.id} style={styleCardUser} width={"300px"} border={"#000"} className={className}>
           <Avatar src={user.avatar} alt={user.name} sx={{ width: 64, height: 64 }} />
           <Box>
             <Typography variant="h6">{user.name}</Typography>
