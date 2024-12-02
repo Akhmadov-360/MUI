@@ -1,73 +1,105 @@
-import { Button, TextField, Typography } from "@mui/material";
+import { Button, Stack, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 
-const BMICalculator = () => {
-  const [height, setHeight] = useState("");
-  const [weight, setWeight] = useState("");
+const BMICalc = () => {
   const [bmi, setBmi] = useState(null);
-  const [status, setStatus] = useState("");
+  const [bmiCategory, setBmiCategory] = useState("");
 
-  const handleCalculate = () => {
-    if (height && weight) {
-      const heightInMeters = height / 100;
-      const calculatedBmi = (weight / heightInMeters ** 2).toFixed(2);
-      setBmi(calculatedBmi);
-      Status(calculatedBmi);
-    }
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    defaultValues: {
+      weight: "",
+      height: "",
+    },
+  });
+
+  const calculateBMI = (weight, height) => {
+    const heightInMeters = height / 100;
+    const bmiValue = (weight / heightInMeters ** 2).toFixed(2);
+
+    setBmi(bmiValue);
+    Status(bmiValue);
   };
 
   const Status = (bmi) => {
     if (bmi < 18.5) {
-      setStatus("Недостаточный вес");
+      setBmiCategory("Недостаточный вес");
     } else if (bmi >= 18.5 && bmi < 24.9) {
-      setStatus("Норма");
+      setBmiCategory("Норма");
     } else if (bmi >= 25 && bmi < 29.9) {
-      setStatus("Избыточный вес");
+      setBmiCategory("Избыточный вес");
     } else {
-      setStatus("Ожирение");
+      setBmiCategory("Ожирение");
     }
   };
 
+  const onSubmit = (data) => {
+    const { weight, height } = data;
+    calculateBMI(weight, height);
+    reset();
+  };
+
   return (
-    <div>
-      <TextField
-        label="Height (cm)"
-        size="small"
-        margin="normal"
-        fullWidth
-        type="number"
-        value={height}
-        onChange={(e) => setHeight(e.target.value)}
-        helperText={!height && "Required"}
-        error={!height}
-      />
+    <Stack direction={"column"} alignItems={"center"} spacing={2}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Controller
+          name="weight"
+          control={control}
+          rules={{
+            required: "Введите вес",
+            min: { value: 1, message: "Вес должен быть больше 0" },
+          }}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              fullWidth
+              type="number"
+              label="Weight (Kg)"
+              error={!!errors.weight}
+              helperText={errors.weight?.message}
+            />
+          )}
+        />
 
-      <TextField
-        label="Weight (kg)"
-        size="small"
-        margin="normal"
-        fullWidth
-        type="number"
-        value={weight}
-        onChange={(e) => setWeight(e.target.value)}
-        helperText={!weight && "Required"}
-        error={!weight}
-      />
+        <Controller
+          name="height"
+          control={control}
+          rules={{
+            required: "Введите рост",
+            min: { value: 1, message: "Рост должен быть больше 0" },
+          }}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              fullWidth
+              type="number"
+              label="Height (cm)"
+              error={!!errors.height}
+              helperText={errors.height?.message}
+            />
+          )}
+        />
 
-      <Button variant="contained" color="primary" onClick={handleCalculate} style={{ marginTop: "10px" }}>
-        Рассчитать
-      </Button>
+        <Button type="submit" variant="contained" color="primary">
+          Calculate
+        </Button>
+      </form>
 
       {bmi && (
         <div style={{ marginTop: "20px" }}>
           <Typography variant="h6">Ваш ИМТ: {bmi}</Typography>
           <Typography variant="body1" color="textSecondary">
-            Состояние: {status}
+            Состояние: {bmiCategory}
           </Typography>
         </div>
       )}
-    </div>
+    </Stack>
   );
 };
 
-export default BMICalculator;
+export default BMICalc;

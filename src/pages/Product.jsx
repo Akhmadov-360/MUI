@@ -1,10 +1,10 @@
 import React from "react";
-import SubscriptionForm from "../components/Form/SubscriptionForm";
+import BMICalc from "../components/Form/BMICalc";
 
 const Product = () => {
   return (
     <>
-      <SubscriptionForm />
+      <BMICalc />
     </>
   );
 };
